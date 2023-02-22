@@ -1,6 +1,6 @@
 from urllib import request
-import numpy as np
 from scipy.stats import pearsonr
+import plotly.express as px
 
 #global variables
 headers = []
@@ -34,3 +34,8 @@ for x in data:
 
 pearson_correlation = pearsonr(years, smoothing)
 print(pearson_correlation)
+
+#scatter graphic
+
+graphic = px.scatter(years, smoothing)
+graphic.show()
