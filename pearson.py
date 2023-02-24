@@ -1,12 +1,14 @@
 from urllib import request
 from scipy.stats import pearsonr
 import plotly.express as px
+import pandas as pd
 
 #global variables
 headers = []
 data = []
 years = []
 smoothing = []
+relation_between_values = []
 
 #download file
 
@@ -24,18 +26,21 @@ for index, line in enumerate(file):
     elif index > 4:
         data.append(line_separate)
 
-#filter data, only years and No smoothing
+#slipt data
 
 for x in data:
     years.append(float(x[0]))
     smoothing.append(float(x[1]))
 
+df = pd.DataFrame(list(zip(years, smoothing)), columns=['year', 'smoothing'])
+
 #pearson correlation
 
 pearson_correlation = pearsonr(years, smoothing)
-print(pearson_correlation)
+# print(pearson_correlation)
 
 #scatter graphic
 
-graphic = px.scatter(years, smoothing)
+title_graphic = 'PValue: ' + str(pearson_correlation.pvalue) + ', Statistic: ' + str(pearson_correlation.statistic)
+graphic = px.scatter(df, x='year', y='smoothing', title=title_graphic, trendline="ols")
 graphic.show()
